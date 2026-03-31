@@ -1,0 +1,91 @@
+sources:
+    supply_chain_db:
+        kind: "alloydb-postgres"
+        project: "<<YOUR_PROJECT_ID>>"
+        region: "us-central1"
+        cluster: "<<YOUR_CLUSTER>>"
+        instance: "<<YOUR_INSTANCE>>"
+        database: "postgres"
+        user: "postgres"
+        password: "<<YOUR_PASSWORD>>"
+
+tools:
+  search_products_by_context:
+    kind: postgres-sql
+    source: supply_chain_db
+    description: Find products in the inventory using natural language search and vector embeddings.
+    parameters:
+      - name: search_text
+        type: string
+        description: Description of the product or category the user is looking for.
+    statement: |
+     SELECT name, category, stock_level, distribution_center, region
+      FROM products
+      ORDER BY embedding <=> ai.embedding('text-embedding-004', $1)::vector
+      LIMIT 5;
+
+  check_inventory_levels:
+    kind: postgres-sql
+    source: supply_chain_db
+    description: Get precise stock levels for a specific product name.
+    parameters:
+      - name: product_name
+        type: string
+        description: The exact or partial name of the product.
+    statement: |
+     SELECT name, stock_level, distribution_center, last_updated
+      FROM products
+      WHERE name ILIKE '%' || $1 || '%'
+      ORDER BY stock_level DESC;
+
+  track_shipment_status:
+    kind: postgres-sql
+    source: supply_chain_db
+    description: Retrieve real-time logistics and shipping status for a specific region or product.
+    parameters:
+      - name: region
+        type: string
+        description: The geographical region to filter shipments (e.g., EMEA, APAC).
+    statement: |
+     SELECT p.name, s.status, s.estimated_arrival, s.route_efficiency_score
+      FROM shipments s
+      JOIN products p ON s.product_id = p.id
+      WHERE p.region = $1
+      ORDER BY s.estimated_arrival ASC;
+
+  analyze_supply_chain_risk:
+    kind: postgres-sql
+    source: supply_chain_db
+    description: Rerank and filter shipments based on risk profiles and efficiency scores using Google ML reranker.
+    parameters:
+      - name: risk_context
+        type: string
+        description: The business context for risk analysis (e.g., 'heatwave impact' or 'port strike').
+    statement: |
+     WITH initial_ranking AS (
+      SELECT s.shipment_id, p.name, s.status, p.distribution_center,
+      ROW_NUMBER() OVER () AS ref_number
+      FROM shipments s
+      JOIN products p ON s.product_id = p.id
+      WHERE s.status != 'Delivered'
+      LIMIT 10
+      ),
+      reranked_results AS (
+      SELECT index, score FROM
+      ai.rank(
+      model_id => 'semantic-ranker-default-003',
+      search_string => $1,
+      documents => (SELECT ARRAY_AGG(name || ' at ' || distribution_center ORDER BY ref_number) FROM initial_ranking)
+      )
+      )
+      SELECT i.name, i.status, i.distribution_center, r.score
+      FROM initial_ranking i, reranked_results r
+      WHERE i.ref_number = r.index
+      ORDER BY r.score DESC;
+
+toolsets:
+   supply_chain_toolset:
+     - search_products_by_context
+     - check_inventory_levels
+     - track_shipment_status
+     - analyze_supply_chain_risk

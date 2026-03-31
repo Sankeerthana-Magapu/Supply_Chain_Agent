@@ -1,0 +1,14 @@
+requests
+debugpy # Required for debugging.
+flask==3.0.3
+gunicorn==22.0.0
+google-adk
+toolbox-core
+google-generativeai
+pyyaml
+python-dotenv
+asyncio
+pydantic
+httpx
+google-cloud-aiplatform[agent_engines, adk]==1.115.0
+google-cloud-modelarmor

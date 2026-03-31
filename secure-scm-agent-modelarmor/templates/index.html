@@ -1,0 +1,165 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Supply Chain | Global Orchestrator</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+    <style>
+        .glass-panel {
+            background: rgba(255, 255, 255, 0.9);
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(0, 0, 0, 0.05);
+        }
+        .brand-blue { color: #1a73e8; }
+        .bg-brand { background-color: #1a73e8; }
+        .log-entry { border-left: 2px solid #1a73e8; }
+        
+        /* Markdown Table Styling */
+        .prose table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 1rem 0;
+            font-size: 0.875rem;
+        }
+        .prose th {
+            background-color: #f8fafc;
+            border: 1px solid #e2e8f0;
+            padding: 8px 12px;
+            text-align: left;
+            font-weight: 600;
+        }
+        .prose td {
+            border: 1px solid #e2e8f0;
+            padding: 8px 12px;
+        }
+        .prose tr:nth-child(even) {
+            background-color: #fdfdfd;
+        }
+        .prose ul {
+            list-style-type: disc;
+            margin-left: 1.5rem;
+            margin-bottom: 1rem;
+        }
+    </style>
+</head>
+<body class="bg-slate-50 min-h-screen flex flex-col font-sans">
+
+    <header class="bg-white border-b px-8 py-4 flex justify-between items-center sticky top-0 z-50">
+        <div class="flex items-center gap-4">
+            <div class="text-2xl font-bold tracking-tight text-slate-800 flex items-center gap-2">
+                <i class="fas fa-network-wired brand-blue"></i> Global Orchestrator
+            </div>
+            <div class="h-6 w-[1px] bg-slate-200"></div>
+            <div class="text-slate-500 font-medium uppercase text-[10px] tracking-widest">Enterprise Intelligent Stack</div>
+        </div>
+        <div class="flex gap-4">
+            <span class="text-xs text-emerald-600 bg-emerald-50 px-3 py-1 rounded-full border border-emerald-100 font-medium">
+                <i class="fas fa-circle text-[8px] mr-2 animate-pulse"></i> Data Cloud Active
+            </span>
+        </div>
+    </header>
+
+    <main class="flex-1 flex overflow-hidden">
+        <section class="flex-1 flex flex-col p-6 max-w-5xl mx-auto w-full">
+            <div id="chat-window" class="flex-1 overflow-y-auto space-y-6 mb-4 p-4 scroll-smooth">
+                <!-- Welcome -->
+                <div class="flex justify-start">
+                    <div class="bg-white p-5 rounded-2xl shadow-sm border border-slate-100 max-w-[85%]">
+                        <p class="text-slate-700 leading-relaxed">System initialized. I am the <b>Global Orchestrator</b>. I provide real-time supply chain intelligence.</p>
+                        <div class="mt-4 flex flex-wrap gap-2">
+                            <button onclick="sendQuick('Stock level for Premium Ice Cream?')" class="text-xs bg-slate-50 hover:bg-slate-100 text-slate-600 px-4 py-2 rounded-lg border border-slate-200 transition">Premium Ice Cream stock?</button>
+                            <button onclick="sendQuick('Any delayed shipments in EMEA?')" class="text-xs bg-slate-50 hover:bg-slate-100 text-slate-600 px-4 py-2 rounded-lg border border-slate-200 transition">EMEA shipment status</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="glass-panel p-2 rounded-2xl shadow-xl border border-slate-200 mb-4">
+                <div class="flex items-center px-4 py-2 gap-3">
+                    <i class="fas fa-terminal text-slate-400 text-sm"></i>
+                    <input type="text" id="user-input" onkeypress="if(event.key==='Enter') sendMessage()" placeholder="Type a command..." class="flex-1 bg-transparent border-none focus:ring-0 text-slate-700 text-sm py-2">
+                    <button onclick="sendMessage()" class="bg-brand text-white h-10 w-10 rounded-xl hover:opacity-90 transition flex items-center justify-center">
+                        <i class="fas fa-arrow-up"></i>
+                    </button>
+                </div>
+            </div>
+        </section>
+
+        <aside class="w-80 border-l bg-white p-6 flex flex-col gap-6">
+            <div>
+                <h3 class="text-[10px] font-bold text-slate-400 uppercase tracking-[0.2em] mb-6">Agent Logic Flow</h3>
+                <div id="narrative-logs" class="space-y-6">
+                    <div class="text-xs text-slate-400 italic">Standby mode...</div>
+                </div>
+            </div>
+        </aside>
+    </main>
+
+    <script>
+        marked.setOptions({
+            breaks: true,
+            gfm: true
+        });
+
+        async function sendMessage() {
+            const input = document.getElementById('user-input');
+            const chatWindow = document.getElementById('chat-window');
+            const logs = document.getElementById('narrative-logs');
+            const message = input.value.trim();
+            if (!message) return;
+
+            chatWindow.innerHTML += `
+                <div class="flex justify-end">
+                    <div class="bg-slate-800 text-white p-4 rounded-2xl shadow-md max-w-[80%] text-sm">${message}</div>
+                </div>
+            `;
+            input.value = '';
+            chatWindow.scrollTop = chatWindow.scrollHeight;
+
+            try {
+                const response = await fetch('/chat', {
+                    method: 'POST',
+                    headers: {'Content-Type': 'application/json'},
+                    body: JSON.stringify({ message: message })
+                });
+                const data = await response.json();
+
+                // Render Markdown response
+                const htmlReply = marked.parse(data.reply);
+
+                chatWindow.innerHTML += `
+                    <div class="flex justify-start">
+                        <div class="bg-white p-5 rounded-2xl shadow-sm border border-slate-100 max-w-[95%] prose prose-sm text-slate-700 leading-relaxed">
+                            ${htmlReply}
+                        </div>
+                    </div>
+                `;
+
+                if (data.narrative.length > 0) {
+                    logs.innerHTML = '';
+                    data.narrative.forEach(entry => {
+                        logs.innerHTML += `
+                            <div class="log-entry pl-4 relative">
+                                <div class="text-[11px] font-bold text-slate-700">${entry.agent}</div>
+                                <div class="text-[10px] text-slate-400 mt-1">${entry.action}</div>
+                            </div>
+                        `;
+                    });
+                }
+                
+                chatWindow.scrollTop = chatWindow.scrollHeight;
+            } catch (e) {
+                console.error(e);
+            }
+        }
+
+        function sendQuick(txt) {
+            document.getElementById('user-input').value = txt;
+            sendMessage();
+        }
+    </script>
+</body>
+</html>
