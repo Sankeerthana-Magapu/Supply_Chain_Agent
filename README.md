@@ -1,38 +1,39 @@
+# 🚀 Supply Chain Agent (Cloud Deployment)
 
-# 🚀 Supply Chain Agent & Visual Commerce Demo
-
-🔗 **Live Demo:** [https://visual-commerce-demo-altw4webga-uc.a.run.app/](https://visual-commerce-demo-altw4webga-uc.a.run.app/)
+🔗 **Live Demo:** [https://supply-chain-agent-756371228163.us-central1.run.app/](https://supply-chain-agent-756371228163.us-central1.run.app/)
 
 ---
 
 ## 📌 Overview
 
-**Supply Chain Agent** is an intelligent web-based system designed to simulate and optimize supply chain operations using modern AI-driven and visual commerce concepts.
+**Supply Chain Agent** is an AI-powered web application that automates and optimizes supply chain operations using intelligent agents.
 
-The application demonstrates how businesses can integrate **visual commerce experiences** with backend supply chain intelligence to improve decision-making, product discovery, and operational efficiency.
+The system demonstrates how modern businesses can leverage **agent-based automation** to manage inventory, forecast demand, and streamline logistics workflows in real time.
 
-Modern visual commerce systems enable features like product visualization, search, and real-time interaction, improving customer engagement and conversion rates ([augmentes.com][1]).
+AI-driven supply chain systems help reduce manual work, improve efficiency, and enable better decision-making through automation and data analysis ([Salesforce][1]).
 
 ---
 
 ## ✨ Features
 
-* 📦 Supply Chain Simulation & Management
-* 🤖 Intelligent Agent-based Decision Support
-* 🛍️ Visual Commerce Integration
-* 📊 Data-driven Insights for Inventory & Logistics
-* ⚡ Fast and interactive UI
-* ☁️ Cloud deployment (Google Cloud Run / Web hosting)
+* 🤖 Autonomous Supply Chain Agents
+* 📦 Inventory Management & Optimization
+* 📊 Demand Forecasting
+* 🔄 Real-time Data Processing
+* ⚡ Fast and responsive UI
+* ☁️ Cloud-native deployment (Google Cloud Run)
+* 🔗 API-based architecture for scalability
 
 ---
 
-## 🧠 Key Concepts Used
+## 🧠 Key Functionalities
 
-* Supply Chain Optimization
-* Agent-based Systems
-* Visual Commerce (Product discovery & interaction)
-* Cloud-native Deployment
-* Scalable Web Architecture
+* **Demand Prediction:** Analyze historical data to forecast future needs
+* **Inventory Optimization:** Maintain optimal stock levels
+* **Order Management:** Automate procurement and tracking
+* **Agent Collaboration:** Multiple agents working together for efficiency
+
+AI agents in supply chain systems can automate workflows, improve accuracy, and increase operational speed significantly ([Beam AI][2]).
 
 ---
 
@@ -45,17 +46,17 @@ Modern visual commerce systems enable features like product visualization, searc
 
 ### Backend
 
-* Python / Node.js *(based on your implementation)*
+* Python / Flask OR Node.js *(based on your implementation)*
 
-### AI / Logic Layer
+### AI / Agent Layer
 
-* Intelligent Agents for decision-making
+* Multi-agent architecture
 * Data processing modules
 
 ### Deployment
 
 * Google Cloud Run
-* GitHub
+* Docker *(if used)*
 
 ---
 
@@ -63,11 +64,12 @@ Modern visual commerce systems enable features like product visualization, searc
 
 ```bash
 Supply_Chain_Agent/
-│── frontend/          # UI components
-│── backend/           # API and business logic
-│── agents/            # Intelligent agent logic
-│── data/              # Supply chain datasets
-│── models/            # AI/ML models (if used)
+│── frontend/
+│── backend/
+│── agents/
+│── data/
+│── models/
+│── app.py / server.js
 │── README.md
 ```
 
@@ -85,16 +87,20 @@ cd Supply_Chain_Agent
 ### 2️⃣ Install dependencies
 
 ```bash
+# For Node.js
 npm install
-# or
+
+# OR for Python
 pip install -r requirements.txt
 ```
 
-### 3️⃣ Run the project
+### 3️⃣ Run locally
 
 ```bash
+# Node.js
 npm start
-# or
+
+# OR Python
 python app.py
 ```
 
@@ -102,12 +108,15 @@ python app.py
 
 ## 🚀 Deployment
 
-The application is deployed using cloud infrastructure.
+This project is deployed using **Google Cloud Run**, which allows:
 
-### Steps to deploy:
+* Automatic scaling
+* Container-based deployment
+* High availability
+
+### Example Deployment Steps:
 
 ```bash
-# Example (Cloud Run / Docker)
 docker build -t supply-chain-agent .
 docker run -p 8080:8080 supply-chain-agent
 ```
@@ -116,17 +125,17 @@ docker run -p 8080:8080 supply-chain-agent
 
 ## 📸 Screenshots
 
-<img width="1919" height="973" alt="Screenshot 2026-03-20 234304" src="https://github.com/user-attachments/assets/bd2170e1-ee61-42f3-b3ac-c43d658baa4a" />
+*(Add UI screenshots, dashboards, or workflow diagrams here)*
 
-<img width="1919" height="970" alt="Screenshot 2026-03-20 234248" src="https://github.com/user-attachments/assets/dec0a839-1a26-40b6-bf96-dc4ec9879498" />
+---
 
 ## 🔮 Future Enhancements
 
-* 📈 Advanced demand forecasting
-* 🧠 Machine learning-based inventory optimization
-* 🌍 Real-time supply chain tracking
-* 🛒 Enhanced visual product search
-* 📊 Analytics dashboard with graphs
+* 📈 Advanced AI forecasting models
+* 🧠 Reinforcement learning for decision-making
+* 🌍 Real-time shipment tracking
+* 📊 Interactive analytics dashboard
+* 🔐 Secure authentication & role-based access
 
 ---
 
@@ -135,10 +144,10 @@ docker run -p 8080:8080 supply-chain-agent
 Contributions are welcome!
 
 1. Fork the repository
-2. Create your branch (`feature/new-feature`)
+2. Create a new branch
 3. Commit your changes
 4. Push to GitHub
-5. Create a Pull Request
+5. Open a Pull Request
 
 ---
 
@@ -157,5 +166,6 @@ This project is licensed under the MIT License.
 
 ## ⭐ Support
 
-If you found this project useful, give it a ⭐ on GitHub!
+If you like this project, give it a ⭐ on GitHub!
 
+---
